@@ -1,70 +1,76 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
-void main() => runApp(MyApp(initParams: window.defaultRouteName,));
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final String initParams;
-
-  MyApp({Key key, this.initParams}) : super(key: key);
+  MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter混合开发', initParams: initParams),
-    );
+        home: DefaultTabController(
+            length: choices.length,
+            child: Scaffold(
+                appBar: AppBar(
+                  title: Text("TabBar"),
+                  bottom: TabBar(
+                    isScrollable: true,
+                      tabs: choices.map((Choice choice) {
+                        return Tab(
+                          text: choice.title,
+                          icon: Icon(choice.icon),
+                        );
+                      }).toList()),
+                ),
+                body: TabBarView(
+                    children: choices.map((Choice choice) {
+                      return ChoiceCard(
+                        choice: choice,
+                      );
+                    }).toList()))));
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title, this.initParams}) : super(key: key);
+List<Choice> choices = <Choice>[
+  Choice(title: 'CAR', icon: Icons.directions_car),
+  Choice(title: 'BIKE', icon: Icons.directions_bike),
+  Choice(title: 'BOAT', icon: Icons.directions_boat),
+  Choice(title: 'BUS', icon: Icons.directions_bus),
+  Choice(title: 'RAILWAY', icon: Icons.directions_railway),
+  Choice(title: 'WALK', icon: Icons.directions_walk),
+  Choice(title: 'TRANSIT', icon: Icons.directions_transit),
+];
 
-  final String title;
-  final String initParams;
+class ChoiceCard extends StatelessWidget {
+  final Choice choice;
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  ChoiceCard({Key key, this.choice}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
+    final TextStyle textStyle = Theme
+        .of(context)
+        .textTheme
+        .display1;
+    return Card(
+      color: Colors.white,
+      child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'initParams:${widget.initParams}',
-              style: TextStyle(fontSize: 20),
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+            Icon(choice.icon, size: 128, color: textStyle.color,),
+            Text(choice.title, style: textStyle,)
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+class Choice {
+  Choice({this.title, this.icon});
+
+  String title;
+  IconData icon;
 }
