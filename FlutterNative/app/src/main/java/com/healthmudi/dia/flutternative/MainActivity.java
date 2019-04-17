@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fl_container, Flutter.createFragment(""))
+                        .replace(R.id.fl_container, Flutter.createFragment("dd"))
                         .commit();
             }
         });

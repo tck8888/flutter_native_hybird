@@ -24,4 +24,19 @@ implementation project(':flutter')
 	minSdkVersion的版本大于flutter_module/.android/app/build.gradle的配置
 ```
 
+## 原生向flutter传递数据
 
+- 原生部分
+```
+  getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fl_container, Flutter.createFragment("dd"))
+                        .commit();
+```
+- flutter部分
+```
+import 'package:flutter/material.dart';
+import 'dart:ui';
+
+void main() => runApp(MyApp(initParams: window.defaultRouteName,));
+```
